@@ -270,7 +270,7 @@ class Customer extends MY_Controller {
 	}
 	
 	public function delete_location($fst_cust_code){
-		$this->db->where('fst_customer_code', $fst_cust_code);
+		$this->db->where('fst_cust_code', $fst_cust_code);
 		$this->db->delete("tblocation");
 		$result =[
 			"status"=>"SUCCESS"
