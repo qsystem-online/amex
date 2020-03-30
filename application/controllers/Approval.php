@@ -93,7 +93,7 @@ class Approval extends MY_Controller{
             and fin_user_group_id = ". $user->fin_group_id . ") a "
         );
 
-		$selectFields = "a.fin_rec_id,a.fst_controller,a.fin_transaction_id,a.fst_transaction_no,a.fst_message,a.fdt_insert_datetime,a.fst_verification_status,a.fst_cust_code,a.fst_cust_name,a.fst_sales_code";		
+		$selectFields = "a.fin_rec_id,a.fst_controller,a.fin_transaction_id,a.fst_transaction_no,a.fst_message,a.fdt_insert_datetime,a.fst_verification_status,a.fdt_update_datetime,a.fst_cust_code,a.fst_cust_name,a.fst_sales_code";		
 		//$selectFields = "a.fin_rec_id,a.fst_controller,a.fin_transaction_id,a.fst_transaction_no,a.fst_message,a.fdt_insert_datetime,a.fst_verification_status";
 		$this->datatables->setSelectFields($selectFields);
 
@@ -108,7 +108,9 @@ class Approval extends MY_Controller{
 		$arrDataFormated = [];
 		foreach ($arrData as $data) {
 			$insertDate = strtotime($data["fdt_insert_datetime"]);						
+			$updateDate = strtotime($data["fdt_update_datetime"]);						
 			$data["fdt_insert_datetime"] = date("d-M-Y H:i:s",$insertDate);
+			$data["fdt_update_datetime"] = date("d-M-Y H:i:s",$updateDate);
 			$arrDataFormated[] = $data;
 		}
 		$datasources["data"] = $arrDataFormated;

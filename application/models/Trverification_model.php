@@ -57,6 +57,7 @@ class Trverification_model extends MY_Model {
             $data=[
                 "fin_rec_id"=>$finRecId,
                 "fst_verification_status"=>"VF" //Verified
+                //"fdt_approval_datetime"=>date("Y-m-d H:i:s")
             ];
             parent::update($data);
 

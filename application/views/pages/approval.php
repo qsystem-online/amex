@@ -180,7 +180,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             },
 			columns:[
 				{"title" : "id","width": "10%",sortable:true,data:"fst_transaction_no",visible:true},
-				{"title" : "Module","width": "10%",sortable:false,data:"fst_controller",visible:true},
+				{"title" : "Module","width": "8%",sortable:false,data:"fst_controller",visible:true},
 				{"title" : "Customer Code","width": "10%",sortable:false,
 					render: function(data,type,row){
                         //return row.ItemCode + "-" + row.fst_custom_item_name;
@@ -205,7 +205,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         return data;                        
                     }
                 },
-                {"title" : "Insert time","width": "20%",sortable:false,data:"fdt_insert_datetime",visible:true},                
+                {"title" : "Insert time","width": "11%",sortable:false,data:"fdt_insert_datetime",visible:true},                
                 {"title" : "Status","width": "10%",sortable:false,visible:true,className:"text-right",
                     render:function(data,type,row){
                         //return row.fst_verification_status; 'VF','RJ','VD'
@@ -220,6 +220,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                     }
                 },
+                {"title" : "Last Update","width": "11%",sortable:false,data:"fdt_update_datetime",visible:true},
             ],
             dataSrc:"data",
 			processing: true,
