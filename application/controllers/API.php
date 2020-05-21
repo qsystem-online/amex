@@ -599,4 +599,101 @@ class API extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+
+	public function newreturn(){
+		//$this->load->model("trorder_model");
+
+		if ($this->input->post("fst_status") == "DELETE"){
+			$fstReturnId = $this->input->post("fst_return_id");
+
+			$this->db->where("fst_return_id",$fstReturnId);
+			$this->db->where("fst_appid",$this->input->post("app_id"));
+			$data=[
+				"fst_active"=>"D",
+			];
+			$this->db->update("tr_return",$data);
+
+
+			$result =[
+				"status"=>"OK",
+				"return_id"=>$this->input->post("fst_return_id"),
+				"message"=>"",
+			];
+			header('Content-Type: application/json');
+			echo json_encode($result);
+			die();
+		}
+
+
+	
+		$rwSales = $this->appid_model->getSales($this->input->post("app_id"),null,$this->input->post("fst_cust_code"));		
+		$result =[
+			"status"=>"NOK",
+			"return_id"=>$this->input->post("fst_return_id"),
+			"message"=>"",
+		];
+
+		if(!$rwSales){
+			$result["message"] = "Invalid sales";
+		}else{
+
+			
+
+			$dataH = [
+				"fst_return_id" => $this->input->post("fst_return_id") . "_" . $rwSales->fst_sales_code,
+				"fst_cust_code"=> $this->input->post("fst_cust_code"),
+				"fst_sales_code" => $rwSales->fst_sales_code,
+				"fdt_return_datetime" => $this->input->post("fdt_return_datetime"),
+				"fst_notes" => $this->input->post("fst_notes"),
+				"fst_appid" => $this->input->post("app_id"),
+				"fst_status" => "UPLOADED",//$this->input->post("fst_status"),
+				"fst_company_code"=>$rwSales->fst_company_code,
+				"fst_active" => 'A',
+				"fin_insert_id" => 1,
+				"fdt_insert_datetime" => date("Y-m-d H:i:s"),
+			];
+			
+			$this->db->trans_start();
+			$this->db->insert("tr_return",$dataH);
+			if ($this->db->error()["code"] != 0 ){				
+				header('Content-Type: application/json');
+				$result["message"] = $this->db->error()["message"];
+				echo json_encode($result);				
+				die();
+			}
+
+			$details =$_POST["details"];
+			$objDetails =  json_decode($details);
+
+			foreach($objDetails as $detail){
+				//{"fst_item_code":"CCLT 320 COMPL","fst_satuan":"Ctn","fin_qty":2,"fin_price":72727.3},
+				$dataD = [
+					"fst_return_id"=>$dataH["fst_return_id"],
+					"fst_item_code"=>$detail->fst_item_code,
+					"fst_satuan"=>$detail->fst_satuan,
+					"fin_qty"=>$detail->fin_qty,
+					"fst_item_notes"=>$detail->fst_item_notes,
+				];
+				$this->db->insert("tr_return_details",$dataD);
+
+			}
+			//var_dump($this->db->error());
+			if ($this->db->error()["code"] == 0 ){
+				//$this->db->trans_complete();
+			}else{
+
+			}
+
+			$result =[
+				"status"=>"OK",
+				"return_id"=>$this->input->post("fst_return_id"),
+				"message"=>"",
+			];
+		}
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}	
+
+
+
 }
