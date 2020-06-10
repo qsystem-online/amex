@@ -15,11 +15,13 @@ class Return_detail extends CI_Controller {
         
         //APPID|fstReturnId|CustCode
         $token = $this->input->get("token");
-        $token = PHP_AES_Cipher::encrypt($key,"1234567890123456","JPU1|20200522201536121|_SSANT007");
+        
+        //$token = PHP_AES_Cipher::encrypt($key,"1234567890123456","JPU1|20200522201536121|_SSANT007");
         $strResult = PHP_AES_Cipher::decrypt($key,$token);
-
+        
         $arrResult = explode("|",$strResult);
         if (sizeof($arrResult) == 3){
+            
             $appId = $arrResult[0];
             $returnId = $arrResult[1];            
             $fstCustCode = $arrResult[2];            
@@ -35,9 +37,10 @@ class Return_detail extends CI_Controller {
                 where fst_return_id = ?";
 
             $qr = $this->db->query($ssql,[$returnId]);
-            
+            //var_dump($this->db->last_query());
+            //die();
             $header = $qr->row_array();
-            //var_dump($header);
+            
             $data=[];
             if ($header != null){
                 //echo $returnId;
