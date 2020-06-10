@@ -35,24 +35,29 @@
 				</div>
 			</div>
 			<div class="row" style="margin-top:20px">
-				<div class="col-xs-6">
+				<div class="col-xs-12 text-right">
+					<label class="block text-left" style="width:100px;">No. Booking</label>
+					<label class="block" style="width:10px;">:</label>                    
+					<span class="block" style="width:200px;"><?=$header["fst_return_id"]?></span>
+				</div>	
+			</div>
+			<div class="row" style="margin-top:20px">
+				<div class="col-xs-12">
 					<label class="block" style="width:100px;">Pelanggan</label>
 					<label class="block" style="width:10px;">:</label>                    
 					<span><?=$header["fst_cust_name"]?></span>
 				</div>
-				<div class="col-xs-6 text-right">
-					<label class="block text-left" style="width:100px;">No. Booking</label>
-					<label class="block" style="width:10px;">:</label>                    
-					<span class="block" style="width:200px;"><?=$header["fst_return_id"]?></span>
-				</div>				
+							
 			</div>
 			<div class="row">
-				<div class="col-xs-6">
+				<div class="col-xs-12">
 					<label class="block" style="width:100px;">Sales</label>
 					<label class="block" style="width:10px;">:</label>                    
 					<span><?=$header["fst_sales_name"]?></span>
-				</div>
-				<div class="col-xs-6 text-right" >
+				</div>				
+			</div>
+			<div class="row" style="margin-top:20px">
+				<div class="col-xs-12" >
 					<label class="block text-left" style="width:100px;">Tanggal</label>
 					<label class="block" style="width:10px;">:</label>                    
 					<span class="block" style="width:200px;"><?= date("d-M-Y",strtotime($header["fdt_return_datetime"]))?></span>
