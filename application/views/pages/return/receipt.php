@@ -35,13 +35,13 @@
 				</div>
 			</div>
 			<div class="row" style="margin-top:20px">
-				<div class="col-xs-12 text-right">
+				<div class="col-xs-12">
 					<label class="block text-left" style="width:100px;">No. Booking</label>
 					<label class="block" style="width:10px;">:</label>                    
 					<span class="block" style="width:200px;"><?=$header["fst_return_id"]?></span>
 				</div>	
 			</div>
-			<div class="row" style="margin-top:20px">
+			<div class="row">
 				<div class="col-xs-12">
 					<label class="block" style="width:100px;">Pelanggan</label>
 					<label class="block" style="width:10px;">:</label>                    
@@ -56,7 +56,7 @@
 					<span><?=$header["fst_sales_name"]?></span>
 				</div>				
 			</div>
-			<div class="row" style="margin-top:20px">
+			<div class="row">
 				<div class="col-xs-12" >
 					<label class="block text-left" style="width:100px;">Tanggal</label>
 					<label class="block" style="width:10px;">:</label>                    
