@@ -57,11 +57,14 @@ class Return_detail extends CI_Controller {
                 $data["details"]=$details;
 
                 $this->parser->parse('pages/return/receipt',$data);
+            }else{
+                echo "Kode [$returnId] Return belum tersedia, coba beberapa saat lagi !";
             }
             
 
         }else{
             //Data Not ready;
+            echo "Kode token tidak valid..!!, hubungi sales "; 
         }
 
 
