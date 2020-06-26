@@ -652,6 +652,21 @@ class API extends CI_Controller {
 				"fin_insert_id" => 1,
 				"fdt_insert_datetime" => date("Y-m-d H:i:s"),
 			];
+
+			//CEK IF RETURN ID ALREADY EXIST
+			$ssql ="SELECT * FROM tr_return where fst_return_id = ?";
+			$qr = $this->db->query($ssql,[$dataH["fst_return_id"]]);
+			$rw = $qr->row();
+			if ($rw){
+				//Data Sudah Berhasil masuk sebelumnya
+				header('Content-Type: application/json');
+				echo json_encode([
+					"status"=>"OK",
+					"return_id"=>$this->input->post("fst_return_id"),
+					"message"=>""
+				]);
+				die();
+			}		
 			
 			$this->db->trans_start();
 			$this->db->insert("tr_return",$dataH);
