@@ -503,10 +503,11 @@ class Sales extends MY_Controller {
 			CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
 			fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,
 			TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration,
-			c.fin_visit_day 
+			d.fin_visit_day 
 			FROM trcheckinlog a 
 			INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
 			INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+			INNER JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code 
 			WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd'";
 	
 		$query = $this->db->query($ssql,[]);
