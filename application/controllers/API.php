@@ -635,10 +635,7 @@ class API extends CI_Controller {
 
 		if(!$rwSales){
 			$result["message"] = "Invalid sales";
-		}else{
-
-			
-
+		}else{		
 			$dataH = [
 				"fst_return_id" => $this->input->post("fst_return_id") . "_" . $rwSales->fst_sales_code,
 				"fst_cust_code"=> $this->input->post("fst_cust_code"),
@@ -687,6 +684,7 @@ class API extends CI_Controller {
 					"fst_item_code"=>$detail->fst_item_code,
 					"fst_satuan"=>$detail->fst_satuan,
 					"fin_qty"=>$detail->fin_qty,
+					"fin_price"=>$detail->fin_price,
 					"fst_item_notes"=>$detail->fst_item_notes,
 				];
 				$this->db->insert("tr_return_details",$dataD);
