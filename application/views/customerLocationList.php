@@ -48,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</span>
 				</div>
 				<table id="tblList" class="table table-bordered table-hover table-striped"></table>
+				<a class="btn btn-primary" href="<?=site_url()?>customer/listLocationToExcel" target="_blank"> Export to Excel</a>
 			</div>
 			<!-- /.box-body -->
 			<div class="box-footer">

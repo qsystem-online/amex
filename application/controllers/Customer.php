@@ -226,6 +226,25 @@ class Customer extends MY_Controller {
         $this->parser->parse('template/main',$this->data);
 	}
 
+	public function listLocationToExcel(){
+		$ssql = "Select a.*,b.fst_cust_location from tbcustomers a inner join tblocation b on a.fst_cust_code = b.fst_cust_code";
+		$qr = $this->db->query($ssql,[]);
+		$rs = $qr->result();
+
+		
+		$data = [
+			'dataReport'=>$rs
+		];
+		
+		$page_content = $this->parser->parse('customerLocationList_to_excel',$data,true);		
+
+		$this->parser->parse('template/excel',[
+			"page_content"=>$page_content,
+			"file_name"=>"customer_location"
+		]);
+	}
+
+
 	public function fetch_list_location_data(){
 		$this->load->library("datatables");
 		$this->load->model("customer_model");
