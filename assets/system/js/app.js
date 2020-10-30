@@ -16,6 +16,19 @@ $(function(){
             radioClass   : 'iradio_minimal-blue'
         })
     }
+    if (typeof $('.money').inputmask =="function"){
+		$(".money").inputmask({
+			alias: 'numeric',
+			autoGroup: true,
+			groupSeparator: ",",
+			radixPoint: ".",
+			allowMinus: true,
+			autoUnmask: true,
+			digits: 2
+		});
+    }
+    
+    
     
 
 });
@@ -24,4 +37,20 @@ $(function(){
 function dateFormat(strDate){
     var result = moment(strDate,'YYYY-MM-DD').format(DATEPICKER_FORMAT_MOMENT);
     return result;
+}
+
+function blockUIOnAjaxRequest(message){
+		
+    if (typeof message == "undefined"){
+        message = "<h5><img src='" + SITE_URL + "assets/system/images/loading.gif'> Please wait ... !</h5>";
+    }
+
+    $(document).ajaxStart(function() {
+        $.blockUI({ message:message});
+    });
+
+    $(document).ajaxStop(function() {
+        $.unblockUI();
+        $(document).unbind('ajaxStart');
+    });
 }
