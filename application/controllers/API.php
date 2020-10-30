@@ -205,7 +205,8 @@ class API extends CI_Controller {
 				$tmpResult =  $this->feed_newcustomer(0);
 				$arrNewCustomer = $tmpResult["data"];
 
-
+				$minOrder = floatval(getDbConfig("min_order"));
+				
 				$data = [
 					"arrCustomer" => $arrCustomer,
 					"arrItems" => $arrItems,
@@ -214,6 +215,7 @@ class API extends CI_Controller {
 					"arrTarget" => $arrTarget,
 					"arrOrderStatus" => $arrOrderStatus,
 					"arrNewCustomer" => $arrNewCustomer,
+					"minOrder"=>$minOrder
 				];
 
 				$result = [
