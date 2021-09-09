@@ -56,7 +56,7 @@ class Customer_model extends MY_Model {
         */
         
         $ssql = "SELECT a.fin_cust_id, a.fst_cust_code, a.fst_cust_name, a.fst_cust_address, a.fst_cust_phone,a.fin_price_group_id,
-            a.fst_company_code,a.fst_active,a.fdt_insert_datetime,a.fin_insert_id,a.fdt_update_datetime,a.fin_update_id,
+            a.fst_company_code,a.fst_active,a.fdt_insert_datetime,a.fin_insert_id,a.fdt_update_datetime,a.fin_update_id,a.fst_blocked_sales_code,
             b.fst_sales_code,b.fin_visit_day,b.fin_putaran,
             d.fst_cust_location FROM ". $this->tableName ." a 
             inner join tbjadwalsales b on a.fst_cust_code = b.fst_cust_code  
@@ -72,6 +72,16 @@ class Customer_model extends MY_Model {
                 if (! $this->inSchedule($rw->fst_cust_code,$rw->fst_sales_code,date("Y-m-d")) ){
                     //$rw->fst_active = 'S';
                     $result[$i]->fst_active = 'S';
+                }
+                //Kalau dalam schedule chek apa di blok untuk sales ini
+                if ( $rw->fst_blocked_sales_code != null){
+                    $blockSales="," .$rw->fst_blocked_sales_code .",";
+                    if (strpos($blockSales,$rw->fst_sales_code) === false){
+
+                    }else{
+                        //Terblock
+                        $result[$i]->fst_active = 'B';
+                    }
                 }
             }                    
         }
@@ -189,6 +199,7 @@ class Customer_model extends MY_Model {
         }
         return false;
     }
+
 
     public function get_select2(){
         $ssql = "select a.fst_cust_code, a.fst_cust_name,b.fst_cust_location from " . $this->tableName . " a
