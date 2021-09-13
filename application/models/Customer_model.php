@@ -72,15 +72,16 @@ class Customer_model extends MY_Model {
                 if (! $this->inSchedule($rw->fst_cust_code,$rw->fst_sales_code,date("Y-m-d")) ){
                     //$rw->fst_active = 'S';
                     $result[$i]->fst_active = 'S';
-                }
-                //Kalau dalam schedule chek apa di blok untuk sales ini
-                if ( $rw->fst_blocked_sales_code != null){
-                    $blockSales="," .$rw->fst_blocked_sales_code .",";
-                    if (strpos($blockSales,$rw->fst_sales_code) === false){
+                }else{
+                    //Kalau dalam schedule chek apa di blok untuk sales ini
+                    if ( $rw->fst_blocked_sales_code != null){
+                        $blockSales="," .$rw->fst_blocked_sales_code .",";
+                        if (strpos($blockSales,$rw->fst_sales_code) === false){
 
-                    }else{
-                        //Terblock
-                        $result[$i]->fst_active = 'B';
+                        }else{
+                            //Terblock
+                            $result[$i]->fst_active = 'B';
+                        }
                     }
                 }
             }                    
