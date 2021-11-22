@@ -38,7 +38,8 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 		<!-- jQuery 3 -->
-		<script src="<?=base_url()?>bower_components/jquery/dist/jquery.min.js"></script>				
+		<script src="<?=base_url()?>bower_components/jquery/dist/jquery.min.js"></script>		
+		
 		<!-- CONFIG JS -->
 		<script src="<?=base_url()?>assets/system/js/config.js"></script>
 		<!-- APP JS -->
@@ -52,10 +53,13 @@
 
 		<!-- iCheck for checkboxes and radio inputs -->
 		<link rel="stylesheet" href="<?=base_url()?>plugins/iCheck/all.css">
-		
+		<script type="text/javascript">
+			SITE_URL = "<?=site_url()?>";
+		</script>
 	</head>
 	<?php
 		$sidebarCollapse = ($this->session->userdata('sidebar_collapse') == 1) ? "sidebar-collapse" : "";
+		
 	?>
 	<body class="hold-transition skin-blue sidebar-mini <?= $sidebarCollapse?>" style="overflow-x:auto">
 		<div class="wrapper" style="overflow-x:auto;min-width:800px">
@@ -161,5 +165,10 @@
 		<script src="<?=base_url()?>plugins/iCheck/icheck.min.js"></script>
 		<!-- Deafult App -->
 		<script src="<?=base_url()?>dist/js/app.js"></script>	
+		<!-- maskmoney -->
+		<script src="<?=base_url()?>bower_components/maskmoney/dist/jquery.maskMoney.min.js"></script>
+		<!-- BlockUI -->
+		<script src="<?=base_url()?>bower_components/jquery.blockUI.js"></script>	
+
 	</body>
 </html>

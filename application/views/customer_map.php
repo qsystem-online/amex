@@ -181,13 +181,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     }
 
-    //AIzaSyDg_tzNYxrn-u0L5RVIl1C5QiwhQIrWBXI
-    //AIzaSyALBylGkXyB-P1boXwMtz7oCV0L8-aHEBA
     //AIzaSyCN8-AYGQU5NGopLLCQaqXmvwty4jHEpC0
+    //AIzaSyCt1qbwGqF5nilzeZMO9WQqlwK3BciGGtM
 
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCN8-AYGQU5NGopLLCQaqXmvwty4jHEpC0&callback=initMap">   </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCt1qbwGqF5nilzeZMO9WQqlwK3BciGGtM&callback=initMap">   </script>
 
 <!-- Select2 -->
 <script src="<?=base_url()?>bower_components/select2/dist/js/select2.full.js"></script>

@@ -4,6 +4,19 @@ $(function(){
         format: DATEPICKER_FORMAT
     });
 
+    if (typeof $('.money').inputmask =="function"){
+        alert("init money");
+		$(".money").inputmask({
+			alias: 'numeric',
+			autoGroup: true,
+			groupSeparator: ",",
+			radixPoint: ".",
+			allowMinus: true,
+			autoUnmask: true,
+			digits: 2
+		});
+	}
+
 });
 
 //Format data dari ajax ke format datepicker, setting di config.js
