@@ -302,6 +302,8 @@ class Sales extends MY_Controller {
 		$this->load->library("datatables");
 		$this->load->model("customer_model");
 		
+		$user = $this->aauth->user();
+        $companyActive = $user->fst_company_code;	
 		$datelog = $this->input->get("dateLog");
 		$arrDateLog = explode("-",$datelog);
 		$dateStart = dateFormat(trim($arrDateLog[0]),"j/m/Y","Y-m-d");
@@ -321,19 +323,35 @@ class Sales extends MY_Controller {
 			) as trcheckinlog
 		");
 		*/
-		$this->datatables->setTableName("
-			(SELECT a.fin_id,
-			CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
-			CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
-			fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,d.fin_visit_day,			
-			TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration
-			FROM trcheckinlog a 
-			INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
-			INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
-			LEFT JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code
-			WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd' 
-			) as trcheckinlog
-		");
+		if ($companyActive !="" || $companyActive != null){
+			$this->datatables->setTableName("
+				(SELECT a.fin_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,b.fst_company_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,d.fin_visit_day,			
+				TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration
+				FROM trcheckinlog a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				LEFT JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code
+				WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd' and b.fst_company_code= '$companyActive'
+				) as trcheckinlog
+			");
+		}else{
+			$this->datatables->setTableName("
+				(SELECT a.fin_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,d.fin_visit_day,			
+				TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration
+				FROM trcheckinlog a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				LEFT JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code
+				WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd' 
+				) as trcheckinlog
+			");
+		}
 		
 		$selectFields = "*";
 		$this->datatables->setSelectFields($selectFields);
@@ -491,6 +509,8 @@ class Sales extends MY_Controller {
 		
 		$this->load->model("customer_model");
 		$datelog = $this->input->get("dateLog");
+		$user = $this->aauth->user();
+        $companyActive = $user->fst_company_code;	
 
 		//selectSearch
 		
@@ -498,17 +518,31 @@ class Sales extends MY_Controller {
 		$dateStart = dateFormat(trim($arrDateLog[0]),"j/m/Y","Y-m-d");
 		$dateEnd = dateFormat(trim($arrDateLog[1]),"j/m/Y","Y-m-d");
 		
-		$ssql = "SELECT a.fin_id,
-			CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
-			CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
-			fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,
-			TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration,
-			d.fin_visit_day 
-			FROM trcheckinlog a 
-			INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
-			INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
-			INNER JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code 
-			WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd'";
+		if ($companyActive !="" || $companyActive != null){
+			$ssql = "SELECT a.fin_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,b.fst_company_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,
+				TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration,
+				d.fin_visit_day 
+				FROM trcheckinlog a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				INNER JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code 
+				WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd' and b.fst_company_code = '$companyActive'";
+		}else{
+			$ssql = "SELECT a.fin_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_checkin_datetime,fdt_checkout_datetime,fin_distance_meters,a.fst_active,
+				TIMEDIFF(fdt_checkout_datetime,fdt_checkin_datetime) as fin_visit_duration,
+				d.fin_visit_day 
+				FROM trcheckinlog a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				INNER JOIN tbjadwalsales d on a.fst_cust_code = d.fst_cust_code and a.fst_sales_code = d.fst_sales_code 
+				WHERE DATE(fdt_checkin_datetime) >= '$dateStart' and DATE(fdt_checkin_datetime) <= '$dateEnd'";
+		}
 	
 		$query = $this->db->query($ssql,[]);
 		$rs = $query->result();

@@ -266,6 +266,8 @@ class Espb extends MY_Controller {
 		$this->load->library("datatables");
 		$this->load->model("trorder_model");
 		
+		$user = $this->aauth->user();
+        $companyActive = $user->fst_company_code;
 		$datelog = $this->input->get("dateLog");
 		$arrDateLog = explode("-",$datelog);
 		$dateStart = dateFormat(trim($arrDateLog[0]),"j/m/Y","Y-m-d");
@@ -285,17 +287,31 @@ class Espb extends MY_Controller {
 			) as trcheckinlog
 		");
 		*/
-		$this->datatables->setTableName("
-			(SELECT a.fst_order_id,
-			CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
-            CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
-            fdt_order_datetime,fst_status,0 as fin_total,a.fst_active
-			FROM tr_order a 
-			INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
-			INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
-			WHERE DATE(fdt_order_datetime) >= '$dateStart' and DATE(fdt_order_datetime) <= '$dateEnd' 
-			) as a
-		");
+		if ($companyActive !="" || $companyActive !=null){
+			$this->datatables->setTableName("
+				(SELECT a.fst_order_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_order_datetime,fst_status,0 as fin_total,a.fst_active,a.fst_company_code
+				FROM tr_order a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				WHERE DATE(fdt_order_datetime) >= '$dateStart' and DATE(fdt_order_datetime) <= '$dateEnd' and a.fst_company_code ='$companyActive'
+				) as a
+			");
+		}else{
+			$this->datatables->setTableName("
+				(SELECT a.fst_order_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_order_datetime,fst_status,0 as fin_total,a.fst_active
+				FROM tr_order a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				WHERE DATE(fdt_order_datetime) >= '$dateStart' and DATE(fdt_order_datetime) <= '$dateEnd' 
+				) as a
+			");
+		}
 		
 		$selectFields = "*";
 		$this->datatables->setSelectFields($selectFields);
@@ -360,21 +376,34 @@ class Espb extends MY_Controller {
 	}
 
 	public function record2Excel(){		
-		$this->load->model("trorder_model");		
+		$this->load->model("trorder_model");
+		$user = $this->aauth->user();
+        $companyActive = $user->fst_company_code;		
 		$datelog = $this->input->get("dateLog");
 		//selectSearch		
 		$arrDateLog = explode("-",$datelog);
 		$dateStart = dateFormat(trim($arrDateLog[0]),"j/m/Y","Y-m-d");
 		$dateEnd = dateFormat(trim($arrDateLog[1]),"j/m/Y","Y-m-d");
 		
-		$ssql = "SELECT a.fst_order_id,
-			CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
-			CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
-			fdt_order_datetime,fst_status,0 as fin_total,a.fst_active
-			FROM tr_order a 
-			INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
-			INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
-			WHERE DATE(fdt_order_datetime) >= ? and DATE(fdt_order_datetime) <= ?";
+		if ($companyActive !="" || $companyActive != null){
+			$ssql = "SELECT a.fst_order_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_order_datetime,fst_status,0 as fin_total,a.fst_active,a.fst_company_code
+				FROM tr_order a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				WHERE DATE(fdt_order_datetime) >= ? and DATE(fdt_order_datetime) <= ? and a.fst_company_code ='$companyActive'";
+		}else{
+			$ssql = "SELECT a.fst_order_id,
+				CONCAT(a.fst_sales_code,' - ',b.fst_sales_name) as fst_sales,a.fst_sales_code,
+				CONCAT (a.fst_cust_code,' - ',c.fst_cust_name) as fst_customer,a.fst_cust_code,
+				fdt_order_datetime,fst_status,0 as fin_total,a.fst_active
+				FROM tr_order a 
+				INNER JOIN tbsales b ON a. fst_sales_code = b.fst_sales_code
+				INNER JOIN tbcustomers c ON a.fst_cust_code = c.fst_cust_code
+				WHERE DATE(fdt_order_datetime) >= ? and DATE(fdt_order_datetime) <= ?";
+		}
 	
 		$query = $this->db->query($ssql,[$dateStart,$dateEnd]);
 		$rs = $query->result();
