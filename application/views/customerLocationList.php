@@ -191,4 +191,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script src="<?=base_url()?>bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 -->
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCN8-AYGQU5NGopLLCQaqXmvwty4jHEpC0&callback=initMap"></script>
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCN8-AYGQU5NGopLLCQaqXmvwty4jHEpC0&callback=initMap"></script> -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCt1qbwGqF5nilzeZMO9WQqlwK3BciGGtM&callback=initMap">   </script>
