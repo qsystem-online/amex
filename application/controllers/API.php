@@ -206,6 +206,7 @@ class API extends CI_Controller {
 				$arrNewCustomer = $tmpResult["data"];
 
 				$minOrder = floatval(getDbConfig("min_order"));
+				$minCheckinMeters = floatval(getDbConfig("min_checkin_meters"));
 				
 				$data = [
 					"arrCustomer" => $arrCustomer,
@@ -215,7 +216,8 @@ class API extends CI_Controller {
 					"arrTarget" => $arrTarget,
 					"arrOrderStatus" => $arrOrderStatus,
 					"arrNewCustomer" => $arrNewCustomer,
-					"minOrder"=>$minOrder
+					"minOrder"=>$minOrder,
+					"minCheckinMeters"=> $minCheckinMeters
 				];
 
 				$result = [
